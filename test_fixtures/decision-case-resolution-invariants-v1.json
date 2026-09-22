@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture_id": "boss-reward-below-argmax-v2",
+      "phase": "BOSS_REWARD",
+      "current_phase": "BOSS_REWARD",
+      "producer_probe": "boss_relic",
+      "mutation": "below_argmax",
+      "resolution_class": "score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["below_argmax_without_independent_review", "candidate_local_score_binding", "container_order_invariant", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "boss-reward-empty-cage-consequence-v1",
+      "phase": "BOSS_REWARD",
+      "current_phase": "BOSS_REWARD",
+      "producer_probe": "boss_relic_empty_cage",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "boss-reward-starter-replacement-consequence-v1",
+      "phase": "BOSS_REWARD",
+      "current_phase": "BOSS_REWARD",
+      "producer_probe": "boss_relic_starter_replacement",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "combat-reward-bijection-unbound-v2",
+      "phase": "COMBAT_REWARD",
+      "current_phase": "SAPPHIRE_KEY",
+      "producer_probe": "sapphire_link",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_bijection",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"],
+      "phase_migration_authority": "bridge_protocol_v2_sapphire_reward_phase_classification"
+    },
+    {
+      "fixture_id": "combat-reward-binding-missing-v2",
+      "phase": "COMBAT_REWARD",
+      "current_phase": "SAPPHIRE_KEY",
+      "producer_probe": "sapphire_link",
+      "mutation": "typed_binding_missing",
+      "resolution_class": "candidate_binding",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"],
+      "phase_migration_authority": "bridge_protocol_v2_sapphire_reward_phase_classification"
+    },
+    {
+      "fixture_id": "event-binding-ambiguous-v2",
+      "phase": "EVENT",
+      "current_phase": "EVENT",
+      "producer_probe": "sensory_stone",
+      "mutation": "typed_binding_ambiguous",
+      "resolution_class": "candidate_binding",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "event-match-candidates-missing-v2",
+      "phase": "EVENT",
+      "current_phase": "EVENT",
+      "producer_probe": "match_keep",
+      "mutation": "delete_all_candidates",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value", "v2_required_producer_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "event-score-tie-v2",
+      "phase": "EVENT",
+      "current_phase": "EVENT",
+      "producer_probe": "sensory_stone",
+      "mutation": "score_tie",
+      "resolution_class": "score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_missing_value_contract", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "grid-uuid-binding-ambiguous-v2",
+      "phase": "GRID",
+      "current_phase": "GRID",
+      "producer_probe": "duplicate_uuid_grid",
+      "mutation": "swap_uuid_index",
+      "resolution_class": "candidate_binding",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "map-bijection-missing-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_veto",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_bijection",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "map-below-argmax-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_choices",
+      "mutation": "below_argmax",
+      "resolution_class": "score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["below_argmax_without_independent_review", "candidate_local_score_binding", "container_order_invariant", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "map-score-tie-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_choices",
+      "mutation": "score_tie",
+      "resolution_class": "score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_missing_value_contract", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "shop-final-binding-v2",
+      "phase": "SHOP_SCREEN",
+      "current_phase": "SHOP_SCREEN",
+      "producer_probe": "shop_visible",
+      "mutation": "final_binding",
+      "resolution_class": "final_choice_binding",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["final_choice_binding"]
+    },
+    {
+      "fixture_id": "shop-resource-preparation-score-v2",
+      "phase": "SHOP_SCREEN",
+      "current_phase": "SHOP_SCREEN",
+      "producer_probe": "shop_resource_preparation",
+      "mutation": "resource_score_tie",
+      "resolution_class": "resource_preparation_score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "combat-reward-resource-preparation-score-v2",
+      "phase": "COMBAT_REWARD",
+      "current_phase": "COMBAT_REWARD",
+      "producer_probe": "combat_reward_resource_preparation",
+      "mutation": "resource_score_tie",
+      "resolution_class": "resource_preparation_score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "boss-reward-candidates-missing-v2",
+      "phase": "BOSS_REWARD",
+      "current_phase": "BOSS_REWARD",
+      "producer_probe": "boss_relic",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "card-reward-candidates-missing-v2",
+      "phase": "CARD_REWARD",
+      "current_phase": "CARD_REWARD",
+      "producer_probe": "card_reward",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "event-candidates-missing-v2",
+      "phase": "EVENT",
+      "current_phase": "EVENT",
+      "producer_probe": "match_keep",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "grid-candidates-missing-v2",
+      "phase": "GRID",
+      "current_phase": "GRID",
+      "producer_probe": "duplicate_uuid_grid",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "map-candidates-missing-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_veto",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "rest-candidates-missing-v2",
+      "phase": "REST",
+      "current_phase": "REST",
+      "producer_probe": "rest",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "sapphire-candidates-missing-v2",
+      "phase": "SAPPHIRE_KEY",
+      "current_phase": "SAPPHIRE_KEY",
+      "producer_probe": "sapphire_link",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "shop-candidates-missing-v2",
+      "phase": "SHOP_SCREEN",
+      "current_phase": "SHOP_SCREEN",
+      "producer_probe": "shop_visible",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "chest-consequence-v2",
+      "phase": "CHEST",
+      "current_phase": "CHEST",
+      "producer_probe": "chest",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "shop-room-consequence-v2",
+      "phase": "SHOP_ROOM",
+      "current_phase": "SHOP_ROOM",
+      "producer_probe": "shop_room",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "event-consequence-v2",
+      "phase": "EVENT",
+      "current_phase": "EVENT",
+      "producer_probe": "sensory_stone",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "event-settlement-v2",
+      "phase": "EVENT",
+      "current_phase": "EVENT",
+      "producer_probe": "match_keep",
+      "mutation": "settlement_unobserved",
+      "resolution_class": "authoritative_settlement",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_settlement_authority_binding", "v2_settlement_not_fully_observable"]
+    },
+    {
+      "fixture_id": "neow-consequence-v2",
+      "phase": "NEOW",
+      "current_phase": "NEOW",
+      "producer_probe": "neow",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "grid-consequence-v2",
+      "phase": "GRID",
+      "current_phase": "GRID",
+      "producer_probe": "duplicate_uuid_grid",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "combat-reward-consequence-v2",
+      "phase": "COMBAT_REWARD",
+      "current_phase": "COMBAT_REWARD",
+      "producer_probe": "combat_reward_skip",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "card-reward-score-order-v2",
+      "phase": "CARD_REWARD",
+      "current_phase": "CARD_REWARD",
+      "producer_probe": "card_reward",
+      "mutation": "score_tie",
+      "resolution_class": "score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_missing_value_contract", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "card_reward_bowl_dominates_skip_v1",
+      "phase": "CARD_REWARD",
+      "current_phase": "CARD_REWARD",
+      "producer_probe": "card_reward_bowl_dominates_skip",
+      "mutation": "score_tie",
+      "resolution_class": "bowl_strict_resource_dominance",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_missing_value_contract", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "hand-select-candidates-missing-v2",
+      "phase": "HAND_SELECT",
+      "current_phase": "HAND_SELECT",
+      "producer_probe": "hand_select",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "card-reward-consequence-v2",
+      "phase": "CARD_REWARD",
+      "current_phase": "CARD_REWARD",
+      "producer_probe": "card_reward",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "map-consequence-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_choices",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "map-maw-bank-consequence-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_maw_bank",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "map-maw-bank-score-tie-v2",
+      "phase": "MAP",
+      "current_phase": "MAP",
+      "producer_probe": "map_maw_bank",
+      "mutation": "score_tie",
+      "resolution_class": "score_ordering",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_missing_value_contract", "v2_projected_candidate_score_formula_result_mismatch"]
+    },
+    {
+      "fixture_id": "hand-select-consequence-v2",
+      "phase": "HAND_SELECT",
+      "current_phase": "HAND_SELECT",
+      "producer_probe": "hand_select",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+      {
+        "fixture_id": "hand-select-score-tie-v2",
+        "phase": "HAND_SELECT",
+        "current_phase": "HAND_SELECT",
+        "producer_probe": "hand_select",
+        "mutation": "score_tie",
+        "resolution_class": "score_ordering",
+        "expected_negative_classification": "audited_issues",
+        "expected_negative_problem_kinds": ["candidate_local_score_binding", "container_order_invariant", "score_cutoff_tie_is_semantically_ambiguous", "v2_missing_value_contract", "v2_projected_candidate_score_formula_result_mismatch"]
+      },
+      {
+        "fixture_id": "hand-select-plan-protection-v2",
+        "phase": "HAND_SELECT",
+        "current_phase": "HAND_SELECT",
+        "producer_probe": "hand_select_plan_protection",
+        "mutation": "plan_protection_removed",
+        "resolution_class": "bound_combat_plan_preservation",
+        "expected_negative_classification": "unresolved",
+        "expected_negative_problem_kinds": ["below_argmax_without_independent_review"]
+      },
+    {
+      "fixture_id": "rest-consequence-v2",
+      "phase": "REST",
+      "current_phase": "REST",
+      "producer_probe": "rest",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "neow-candidates-missing-v2",
+      "phase": "NEOW",
+      "current_phase": "NEOW",
+      "producer_probe": "neow",
+      "mutation": "delete_candidate",
+      "resolution_class": "candidate_completeness",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["candidates_missing", "v2_projected_candidates_missing", "v2_required_candidates_missing_value"]
+    },
+    {
+      "fixture_id": "sapphire-consequence-v2",
+      "phase": "SAPPHIRE_KEY",
+      "current_phase": "SAPPHIRE_KEY",
+      "producer_probe": "sapphire_link",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    },
+    {
+      "fixture_id": "sapphire-bloody-idol-gold-consequence-v1",
+      "phase": "SAPPHIRE_KEY",
+      "current_phase": "SAPPHIRE_KEY",
+      "producer_probe": "sapphire_bloody_idol_gold",
+      "mutation": "consequence_tamper",
+      "resolution_class": "structured_consequence",
+      "expected_negative_classification": "audited_issues",
+      "expected_negative_problem_kinds": ["v2_producer_effect_claim_contradicted:gold_delta", "v2_projected_producer_consequence_claim_recompute"]
+    }
+  ]
+}

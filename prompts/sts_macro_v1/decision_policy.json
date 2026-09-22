@@ -1,0 +1,44 @@
+{
+  "objective": "maximize_probability_of_defeating_corrupt_heart",
+  "common_rules": [
+    "hard_constraints_are_inviolable",
+    "never_select_an_unlisted_candidate_id",
+    "do_not_infer_ui_indexes_or_raw_commands",
+    "observed_runtime_then_static_mechanics_then_controller_estimates_then_memory",
+    "never_invent_boss_minions_phases_or_aoe_requirements",
+    "avoid_deck_bloat_and_unsupported_payoffs",
+    "value_survival_before_optional_greed",
+    "preserve_key_deadlines_and_act4_readiness"
+  ],
+  "decision_types": {
+    "CARD_REWARD": "Score the marginal contribution to the current deck, known boss matchup and Heart readiness. Skip or Singing Bowl is better than deck bloat, redundancy, an unsupported payoff or a card whose future enablers are merely hoped for; do not rank by rarity or standalone card strength.",
+    "BOSS_RELIC": "Evaluate energy marginally, not categorically. A fifth or sixth permanent energy requires observed spend pressure from draw, expensive cards, or X-cost cards. For Coffee Dripper, price the multi-act loss of Rest against observed non-Rest sustain and deck defense; the post-boss transition heal is not repeatable sustain. For Mark of Pain, its two Wounds are additional status sources and dead draws: other status-generating cards are not synergy unless an observed payoff or reliable cleanup exists, and never assume future Evolve, Fire Breathing, or exhaust cards. For Tiny House, value only effective post-state gains; Ectoplasm blocks its gold and the scheduled act-transition heal can supersede most of its immediate heal.",
+    "SHOP": "Compare the next legal purchase against leaving while preserving gold constraints.",
+    "SAPPHIRE_KEY": "Compare the linked relic opportunity cost with the remaining key deadline.",
+    "EVENT": "Rank only supplied event outcomes. Structured consequences are signed: lose/give/pay/damage/max-HP loss are costs even when the same option also grants a relic or another reward. Price the exact lost card, potion, gold and HP from candidate facts; never treat a mentioned resource as gained merely because its name appears in the text.",
+    "MAP": "Rank only routes already proven reachable and safe by deterministic lookahead.",
+    "CAMPFIRE": "Compare every supplied legal non-mandatory campfire option. RECALL obtains the Ruby key; evaluate its own deadline independently from Sapphire and Emerald, using current recovery, supplied Smith/Toke target facts, boss risk, and visible future campfire rows. Smith value is the best realizable marginal upgrade, not the current strength of that card.",
+    "GRID": "First infer the supplied operation from decision_context selection_action and selection_semantics plus hard constraints, then score the utility of applying that operation to each exact instance. For remove or transform, higher means the best card to remove or transform: lowest retain value, not the card most worth keeping. For upgrade, higher means greatest marginal upgrade gain, not greatest current card strength. For copy, bottle or another beneficial selection, higher means the best recipient or card to keep.",
+    "NEOW": "Evaluate each visible reward and drawback as one net package using the starting deck, character sustain, known Act 1 boss and early survival. Do not price an unspecified random future outcome as guaranteed and do not ignore max-HP, curse, gold or starter-relic opportunity costs.",
+    "RUN_PLAN": "Choose a soft direction from observed deck sources, reliable enablers, payoffs and relic support. A persistent non-balanced direction requires paired observed support: at least one reliable source/enabler and one payoff. A lone source, lone payoff or relic alone may affect marginal picks but cannot commit the run. Balanced is correct when evidence is weak. Never assume unoffered cards or relics, and retain universal frontload, block, draw and energy needs even when an archetype is supported."
+  },
+  "reason_codes": [
+    "SURVIVAL",
+    "FRONTLOAD",
+    "SCALING",
+    "BLOCK_ENGINE",
+    "DRAW",
+    "ENERGY",
+    "AOE",
+    "DECK_SYNERGY",
+    "BOSS_MATCHUP",
+    "HEART_MATCHUP",
+    "KEY_DEADLINE",
+    "ROUTE_RISK",
+    "GOLD_EFFICIENCY",
+    "DECK_SIZE",
+    "REMOVE_PRIORITY",
+    "UPGRADE_PRIORITY",
+    "POTION_CAPACITY"
+  ]
+}

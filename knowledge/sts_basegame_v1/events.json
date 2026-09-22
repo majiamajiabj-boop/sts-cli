@@ -1,0 +1,35 @@
+{
+  "schema": "compact-strategy-knowledge-v2",
+  "rules": [
+    "Only supplied visible event candidates may be ranked; runtime option text and structured signed consequences remain authoritative.",
+    "Protocol-sensitive multi-stage interactions such as Match and Keep and exact card grids remain deterministic.",
+    "Disabled, unaffordable and lethal options are removed before model ranking.",
+    "Visible option text and structured costs override remembered event outcomes."
+  ],
+  "irreversible_events": {
+    "COUNCIL_OF_GHOSTS": {
+      "accept": "Lose 50% Max HP and receive 5 Apparition, or 3 at Ascension 15+. Toxic Egg upgrades the received cards and removes their Ethereal drawback.",
+      "decline": "No change.",
+      "ranking": "Compare post-choice current/max HP, Apparition count, deck access and existing block/draw/retain support; do not use a fixed Max-HP threshold."
+    },
+    "VAMPIRES": {
+      "blood_vial": "If available, lose Blood Vial, remove all Strikes and receive exactly 5 Bites.",
+      "accept": "Remove all Strikes, receive exactly 5 Bites and lose 30% Max HP.",
+      "decline": "No change.",
+      "ranking": "Compare exact Strike count, deck-size delta, sustain need, healing restrictions and the actual Blood Vial or Max-HP opportunity cost."
+    },
+    "WINDING_HALLS": {
+      "madness": "Receive 2 Madness and lose 12.5% Max-HP worth of current HP, increased to 18% at Ascension 15+.",
+      "focus": "Receive Writhe and heal 25% Max HP, reduced to 20% at Ascension 15+; Omamori may prevent Writhe.",
+      "retrace": "Lose 5% Max HP.",
+      "ranking": "Compare the signed post-choice state; Writhe is an Innate unplayable curse, not a free heal."
+    },
+    "MIND_BLOOM": {
+      "war": "Fight a random Act 1 boss and receive its normal combat rewards, a rare relic, and 50 Gold (25 at Ascension 15+).",
+      "awake": "Upgrade all upgradable cards and obtain Mark of the Bloom, permanently preventing healing.",
+      "rich": "Gain 999 Gold and receive 2 Normality; this third option appears on floors 35 through 40.",
+      "healthy": "Heal to full HP and receive Doubt; this replaces Rich on floor 41 and above.",
+      "ranking": "Awake is always the second option and is not Healthy. Never hard-reject Awake merely because current HP is below maximum; price all upgrades against permanent healing loss and remaining Act 3/Act 4 risk."
+    }
+  }
+}

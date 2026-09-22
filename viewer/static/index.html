@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="只读查看 Slay the Spire 最近十局已完成对局。"
+    />
+    <title>尖塔战报 · 最近十局</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">LOCAL RUN ARCHIVE · 只读</p>
+          <h1>最近十局</h1>
+          <p class="hero-copy">
+            只收录权威结束并完成归档的对局。正在进行的游戏不会出现在这里。
+          </p>
+        </div>
+        <div class="hero-actions">
+          <div class="live-state" aria-live="polite">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span id="sync-status">正在读取归档</span>
+          </div>
+          <button class="refresh-button" id="refresh-button" type="button">
+            <span aria-hidden="true">↻</span>
+            刷新战报
+          </button>
+        </div>
+      </header>
+
+      <section class="stat-grid" aria-label="最近十局概览">
+        <article class="stat-card stat-card-primary">
+          <p>已完成对局</p>
+          <strong id="stat-count">—</strong>
+          <span>最多显示 10 局</span>
+        </article>
+        <article class="stat-card">
+          <p>进入第四幕</p>
+          <strong id="stat-act4">—</strong>
+          <span id="stat-heart">腐化之心胜利 —</span>
+        </article>
+        <article class="stat-card">
+          <p>最深进度</p>
+          <strong id="stat-deepest">—</strong>
+          <span id="stat-floor">等待记录</span>
+        </article>
+        <article class="stat-card">
+          <p>平均行动数</p>
+          <strong id="stat-actions">—</strong>
+          <span id="stat-average-floor">平均楼层 —</span>
+        </article>
+      </section>
+
+      <section class="runs-section" aria-labelledby="runs-heading">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">COMPLETED ATTEMPTS</p>
+            <h2 id="runs-heading">已完成对局</h2>
+          </div>
+          <div class="filters" role="group" aria-label="按角色筛选">
+            <button class="filter-button is-active" data-character="ALL" type="button">
+              全部
+            </button>
+            <button class="filter-button" data-character="IRONCLAD" type="button">
+              铁甲
+            </button>
+            <button class="filter-button" data-character="THE_SILENT" type="button">
+              静默
+            </button>
+            <button class="filter-button" data-character="DEFECT" type="button">
+              故障
+            </button>
+          </div>
+        </div>
+
+        <div class="run-grid" id="run-grid" aria-live="polite">
+          <article class="loading-card">
+            <div class="loading-line loading-line-short"></div>
+            <div class="loading-line"></div>
+            <div class="loading-line"></div>
+          </article>
+        </div>
+        <div class="empty-state" id="empty-state" hidden>
+          <span aria-hidden="true">◇</span>
+          <h3>没有符合条件的已完成对局</h3>
+          <p>角色筛选可能隐藏了当前记录。</p>
+        </div>
+      </section>
+
+      <footer class="footer-note">
+        <span>数据源：独立完成归档</span>
+        <span>只读接口 · 不读取当前局状态</span>
+      </footer>
+    </main>
+
+    <dialog class="run-dialog" id="run-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <div>
+            <p class="section-kicker" id="dialog-kicker">RUN DETAIL</p>
+            <h2 id="dialog-title">对局详情</h2>
+          </div>
+          <button class="dialog-close" id="dialog-close" type="button" aria-label="关闭详情">
+            ×
+          </button>
+        </header>
+        <div class="dialog-content" id="dialog-content">
+          <div class="detail-loading">正在读取这局的完成归档…</div>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>

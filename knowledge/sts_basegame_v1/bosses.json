@@ -1,0 +1,83 @@
+{
+  "schema": "compact-boss-knowledge-v1",
+  "authority": "base_game_encounter_structure_and_signature_mechanics",
+  "priority": [
+    "The supplied structured current state is authoritative for the current encounter.",
+    "For a recognized base-game boss, these facts override recalled or assumed enemy count, phases, thresholds and signature mechanics.",
+    "Do not transfer minions, phases or mechanics from one boss to another. Unknown or modded encounters stay grounded in supplied runtime facts."
+  ],
+  "act_structure": {
+    "ACT_1": "Exactly one of Slime Boss, The Guardian or Hexaghost is the act boss.",
+    "ACT_2": "Exactly one of The Champ, The Collector or Bronze Automaton is the act boss.",
+    "ACT_3": "Exactly one of Awakened One, Time Eater or Donu and Deca is the act boss.",
+    "ACT_4": "The Spire Shield and Spire Spear elite encounter is followed by the single-enemy Corrupt Heart encounter."
+  },
+  "bosses": {
+    "SLIME_BOSS": {
+      "aliases": ["Slime Boss", "SlimeBoss"],
+      "act": 1,
+      "structure": "One enemy before Split; no minions. At half HP or lower it splits into Acid Slime (L) and Spike Slime (L), each inheriting the boss's remaining HP.",
+      "planning": "Cross the split threshold with the largest safe damage packet or burst turn. Barely crossing produces two high-HP slimes; damage beyond the threshold before Split lowers both resulting slimes."
+    },
+    "THE_GUARDIAN": {
+      "aliases": ["The Guardian", "Guardian"],
+      "act": 1,
+      "structure": "Always one enemy and never has minions.",
+      "planning": "Damage can trigger Mode Shift before a dangerous attack. Defensive Mode uses Sharp Hide retaliation, so account for retaliation per attack and prefer fewer efficient hits when it is active."
+    },
+    "HEXAGHOST": {
+      "aliases": ["Hexaghost"],
+      "act": 1,
+      "structure": "Always one enemy and never has minions. Divider is a multi-hit attack, not a multi-enemy encounter or an AOE requirement.",
+      "planning": "Opening Divider damage scales with the player's HP at combat entry. Value reliable single-target scaling, Weak and multi-hit mitigation; Burns and later Inferno create a time limit."
+    },
+    "THE_CHAMP": {
+      "aliases": ["The Champ", "Champ"],
+      "act": 2,
+      "structure": "Always one enemy and never has minions.",
+      "planning": "At half HP the phase transition cleanses debuffs, gains Strength and leads toward Execute. Control the threshold, prepare defense or burst, then finish the second phase quickly."
+    },
+    "THE_COLLECTOR": {
+      "aliases": ["The Collector", "Collector"],
+      "act": 2,
+      "structure": "The Collector can summon and resummon up to two Torch Head minions, so the encounter can contain three enemies.",
+      "planning": "AOE and efficient minion removal have real value, but the boss remains the scaling objective. Prepare for the heavy debuff and do not spend all damage repeatedly clearing harmless minions."
+    },
+    "BRONZE_AUTOMATON": {
+      "aliases": ["Bronze Automaton", "BronzeAutomaton"],
+      "act": 2,
+      "structure": "The encounter includes Bronze Automaton and two Bronze Orb minions. Orbs can steal cards and return them when killed.",
+      "planning": "Plan orb kills around retrieval of important cards and prepare a specific answer to Hyper Beam. AOE is useful only when it advances those goals without delaying boss scaling."
+    },
+    "AWAKENED_ONE": {
+      "aliases": ["Awakened One", "AwakenedOne"],
+      "act": 3,
+      "structure": "First phase has Awakened One plus two Cultists; after first-phase lethal the boss revives for a second phase.",
+      "planning": "Powers played in the first phase grant the boss Strength, so play only powers whose value exceeds that cost. Remove scaling Cultists efficiently and reserve enough output and defense for the revived phase."
+    },
+    "TIME_EATER": {
+      "aliases": ["Time Eater", "TimeEater"],
+      "act": 3,
+      "structure": "Always one enemy and never has minions.",
+      "planning": "The card counter persists across turns. Playing the twelfth card immediately ends the player turn and gives Time Eater Strength. Plan exact card counts rather than treating every playable card as free; its once-per-fight half-HP heal and cleanse creates a phase threshold."
+    },
+    "DONU_AND_DECA": {
+      "aliases": ["Donu and Deca", "DonuDeca", "Donu", "Deca"],
+      "act": 3,
+      "structure": "Exactly two bosses are present: Donu and Deca.",
+      "planning": "Donu repeatedly increases both enemies' Strength while Deca supplies defense and Dazed. Focus fire is essential; killing Donu first usually removes the accelerating Strength source, while efficient AOE remains useful."
+    },
+    "SPIRE_SHIELD_AND_SPEAR": {
+      "aliases": ["Spire Shield and Spire Spear", "Spire Shield", "Spire Spear"],
+      "act": 4,
+      "structure": "Exactly two elite enemies are present immediately before the Heart: Spire Shield and Spire Spear.",
+      "planning": "Surrounded makes facing and target order matter. Prepare strong first-two-turn defense, multi-hit mitigation and enough focused damage to remove one enemy before their scaling overwhelms the run."
+    },
+    "CORRUPT_HEART": {
+      "aliases": ["Corrupt Heart", "The Heart", "Heart"],
+      "act": 4,
+      "structure": "Always one enemy and never has minions.",
+      "planning": "Invincible caps damage dealt per turn and Beat of Death punishes every card played. The Heart alternates large single and multi-hit attacks, adds statuses and scales each cycle; value consistent block, multi-hit mitigation, artifact or debuff control and damage across several turns, not AOE."
+    }
+  }
+}

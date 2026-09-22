@@ -1,0 +1,195 @@
+{
+  "fixture_schema_version": 1,
+  "source": {
+    "attempt_id": "137a936b-f932-4147-a4cf-225b7d8256ed",
+    "before_seq": 88863,
+    "phase": "COMBAT_TURN_3",
+    "note": "Historical Slime Boss Slam turn reconstructed from autoplay.log and the serialized deck/card instances."
+  },
+  "oracle": {
+    "split_threshold": 70,
+    "projected_loss": 0,
+    "actual_loss": 0
+  },
+  "available_commands": ["play", "potion", "end"],
+  "game_state": {
+    "current_action": null,
+    "current_hp": 60,
+    "max_hp": 70,
+    "floor": 16,
+    "act": 1,
+    "gold": 40,
+    "seed": 1519900702230258048,
+    "class": "THE_SILENT",
+    "ascension_level": 0,
+    "key_system_unlocked": true,
+    "has_ruby_key": false,
+    "has_emerald_key": false,
+    "has_sapphire_key": true,
+    "ironclad_third_act_win": true,
+    "silent_third_act_win": true,
+    "defect_third_act_win": true,
+    "relics": [
+      {"id": "Ring of the Snake", "name": "Ring of the Snake", "counter": -1},
+      {"id": "ClockworkSouvenir", "name": "Clockwork Souvenir", "counter": -1},
+      {"id": "Odd Mushroom", "name": "Odd Mushroom", "counter": -1}
+    ],
+    "deck": [],
+    "map": [],
+    "potions": [
+      {
+        "id": "GamblersBrew",
+        "name": "Gambler's Brew",
+        "can_use": true,
+        "can_discard": true,
+        "requires_target": false
+      },
+      {
+        "id": "Potion Slot",
+        "name": "Potion Slot",
+        "can_use": false,
+        "can_discard": false,
+        "requires_target": false
+      },
+      {
+        "id": "Potion Slot",
+        "name": "Potion Slot",
+        "can_use": false,
+        "can_discard": false,
+        "requires_target": false
+      }
+    ],
+    "act_boss": "Slime Boss",
+    "is_screen_up": false,
+    "screen_type": "NONE",
+    "screen_state": {},
+    "room_phase": "COMBAT",
+    "room_type": "MonsterRoomBoss",
+    "combat_state": {
+      "player": {
+        "max_hp": 70,
+        "current_hp": 60,
+        "block": 0,
+        "energy": 3,
+        "powers": [
+          {"id": "Dexterity", "name": "Dexterity", "amount": 2},
+          {"id": "Artifact", "name": "Artifact", "amount": 1}
+        ],
+        "orbs": []
+      },
+      "monsters": [
+        {
+          "id": "SlimeBoss",
+          "name": "Slime Boss",
+          "max_hp": 140,
+          "current_hp": 88,
+          "block": 0,
+          "intent": "ATTACK",
+          "half_dead": false,
+          "is_gone": false,
+          "move_id": 2,
+          "move_base_damage": 35,
+          "move_adjusted_damage": 35,
+          "move_hits": 1,
+          "powers": [
+            {"id": "Split", "name": "Split", "amount": -1}
+          ]
+        }
+      ],
+      "draw_pile": [],
+      "discard_pile": [],
+      "exhaust_pile": [],
+      "limbo": [],
+      "card_in_play": null,
+      "turn": 3,
+      "cards_discarded_this_turn": 0,
+      "hand": [
+        {
+          "id": "PiercingWail",
+          "name": "Piercing Wail",
+          "type": "SKILL",
+          "rarity": "COMMON",
+          "upgrades": 0,
+          "has_target": false,
+          "cost": 1,
+          "uuid": "c9789cb9-ba47-4417-ad1b-fc643da58501",
+          "is_playable": true,
+          "exhausts": true,
+          "damage": 0,
+          "base_damage": -1,
+          "block": 1,
+          "base_block": -1,
+          "magic_number": 6
+        },
+        {
+          "id": "Strike_G",
+          "name": "Strike",
+          "type": "ATTACK",
+          "rarity": "BASIC",
+          "upgrades": 0,
+          "has_target": true,
+          "cost": 1,
+          "uuid": "bedd9a4d-2a1e-468b-a8c6-c028cad9040e",
+          "is_playable": true,
+          "exhausts": false,
+          "damage": 6,
+          "base_damage": 6,
+          "block": 1,
+          "base_block": -1,
+          "magic_number": -1
+        },
+        {
+          "id": "Dagger Spray",
+          "name": "Dagger Spray",
+          "type": "ATTACK",
+          "rarity": "COMMON",
+          "upgrades": 0,
+          "has_target": false,
+          "cost": 1,
+          "uuid": "9ef28139-1040-4a6c-a62f-31e4ed43d9e9",
+          "is_playable": true,
+          "exhausts": false,
+          "damage": 4,
+          "base_damage": 4,
+          "block": 1,
+          "base_block": -1,
+          "magic_number": -1
+        },
+        {
+          "id": "Choke",
+          "name": "Choke",
+          "type": "ATTACK",
+          "rarity": "UNCOMMON",
+          "upgrades": 0,
+          "has_target": true,
+          "cost": 2,
+          "uuid": "f0096802-3615-477b-bc99-a8955ceb10bf",
+          "is_playable": true,
+          "exhausts": false,
+          "damage": 12,
+          "base_damage": 12,
+          "block": 1,
+          "base_block": -1,
+          "magic_number": 3
+        },
+        {
+          "id": "Slimed",
+          "name": "Slimed",
+          "type": "STATUS",
+          "rarity": "COMMON",
+          "upgrades": 0,
+          "has_target": false,
+          "cost": 1,
+          "uuid": "2f6881ef-a08c-4e78-8ffe-586840bedf1d",
+          "is_playable": true,
+          "exhausts": true,
+          "damage": 0,
+          "base_damage": -1,
+          "block": 1,
+          "base_block": -1,
+          "magic_number": -1
+        }
+      ]
+    }
+  }
+}

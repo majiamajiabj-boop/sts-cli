@@ -1,0 +1,12 @@
+{
+  "character": "IRONCLAD",
+  "strategic_axes": [
+    "frontloaded_damage_and_vulnerable",
+    "strength_scaling_and_multihit_payoffs",
+    "exhaust_engine_enablers_and_payoffs",
+    "block_barricade_body_slam_engine",
+    "status_generation_requires_payoffs",
+    "self_damage_requires_sustain_or_rupture_value"
+  ],
+  "heart_needs": ["repeatable_block", "scaling", "draw_or_exhaust_consistency"]
+}

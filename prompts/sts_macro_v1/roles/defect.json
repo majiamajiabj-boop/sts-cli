@@ -1,0 +1,12 @@
+{
+  "character": "DEFECT",
+  "strategic_axes": [
+    "focus_and_orb_slots_multiply_orb_generation",
+    "frost_requires_focus_or_loop_for_late_defense",
+    "dark_orbs_need_evocation_control",
+    "power_setup_needs_time_and_early_survival",
+    "zero_cost_cards_need_all_for_one_or_scrape_density",
+    "energy_and_draw_balance_expensive_setup"
+  ],
+  "heart_needs": ["fast_setup", "repeatable_frost_or_block", "scaling_focus_or_dark_damage"]
+}

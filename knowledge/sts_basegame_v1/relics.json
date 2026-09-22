@@ -1,0 +1,16 @@
+{
+  "schema": "compact-strategy-knowledge-v1",
+  "hard_rules": {
+    "Runic Dome": "Never take because the deterministic controller depends on enemy intents.",
+    "Sozu": "Do not value future potions after acquisition.",
+    "Coffee Dripper": "Rest becomes unavailable; require reliable sustain or safe HP.",
+    "Fusion Hammer": "Smith becomes unavailable.",
+    "Mark of the Bloom": "Healing is blocked.",
+    "Busted Crown": "Future card reward quality is severely reduced."
+  },
+  "rules": [
+    "Runtime relic id, counter and price are authoritative.",
+    "Build affinity is marginal evidence, never permission to violate a hard rule.",
+    "Unknown or modded relics without grounded facts remain deterministic."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "compact-strategy-knowledge-v1",
+  "source": "authoritative_runtime_fields_plus_local_policy_tags",
+  "rules": [
+    "Runtime cost, damage, block, magic number, upgrade count, type and rarity override remembered values.",
+    "A payoff without sufficient enablers is speculative and should not define a build.",
+    "Skip and Singing Bowl are real candidates for permanent rewards.",
+    "Temporary combat card selections are outside macro-adviser scope.",
+    "Unknown or modded cards without grounded facts must remain on deterministic policy."
+  ],
+  "roles": ["damage", "block", "draw", "energy", "aoe", "scaling", "power", "zero_cost"],
+  "archetypes": {
+    "IRONCLAD": ["strength", "exhaust", "status", "block"],
+    "THE_SILENT": ["poison", "shiv", "discard"],
+    "DEFECT": ["frost", "lightning", "dark", "zero_cost", "powers"]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "source": {
+    "attempt_id": "59e6bac7-a2d7-411c-9b13-180e5e3eb302",
+    "seed": 6887903629271680007,
+    "before_seq": 291512,
+    "floor": 6,
+    "turn": 2
+  },
+  "player": {
+    "current_hp": 78,
+    "max_hp": 85,
+    "energy": 3,
+    "dexterity": 2
+  },
+  "monster": {
+    "id": "Lagavulin",
+    "current_hp": 100,
+    "max_hp": 109,
+    "block": 4,
+    "intent": "ATTACK",
+    "damage": 18,
+    "hits": 1,
+    "vulnerable": 1,
+    "metallicize": 4
+  },
+  "hand": [
+    {"id": "Defend_R", "type": "SKILL", "cost": 1, "block": 7},
+    {"id": "Strike_R", "type": "ATTACK", "cost": 1, "damage": 6},
+    {"id": "Defend_R", "type": "SKILL", "cost": 1, "block": 7},
+    {"id": "Carnage", "type": "ATTACK", "cost": 2, "damage": 20},
+    {"id": "Defend_R", "type": "SKILL", "cost": 1, "block": 7}
+  ],
+  "remaining_combat_cards": [
+    {"id": "Strike_R", "type": "ATTACK", "cost": 1, "damage": 6},
+    {"id": "Strike_R", "type": "ATTACK", "cost": 1, "damage": 6},
+    {"id": "Bash", "type": "ATTACK", "cost": 2, "damage": 8},
+    {"id": "Perfected Strike", "type": "ATTACK", "cost": 2, "damage": 16},
+    {"id": "Perfected Strike", "type": "ATTACK", "cost": 2, "damage": 16},
+    {"id": "Defend_R", "type": "SKILL", "cost": 1, "block": 7}
+  ],
+  "observed_old_plan": ["Defend_R", "Strike_R", "Defend_R"],
+  "oracle": {
+    "required_plan": ["Defend_R", "Carnage"],
+    "projected_hp_loss": 11,
+    "enemy_hp_progress": 26,
+    "minimum_persistent_debuff_pressure": 6.0
+  }
+}

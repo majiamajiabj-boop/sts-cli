@@ -1,0 +1,68 @@
+# Local toolchains and generated build output
+.tools/
+**/target/
+**/build/
+**/dist/
+*.class
+*.jar
+*.zip
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.deepseek-advisor-cache/
+
+# Live controller state and receipts
+state.json
+state-meta.json
+action-receipt.json
+bridge-instance.json
+run-result.json
+run-history.jsonl
+run-context.json
+next-run-selection.json
+
+# Runtime traces, validation output, and screenshots
+autoplay.log
+launch.log
+goal-progress.md
+logs/
+*.log
+screen*.png
+
+# Editor and OS metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Assistant and local game runtime data
+/data/
+/.java-localappdata/
+/.java-python-runtime/
+/.autoplay-*.lock
+/.campaign-attempt.lock
+/.tmp_*
+/artifact-staging/
+/command.json
+/CommunicationMod.jar.*
+/decision-case-corpus/
+/decision-case-*.json*
+/decision-case-*.tmp
+/decision-cases.jsonl
+/cohort-*.json
+/death-replay.json
+/freeze-manifest.json
+/release-preflight.json*
+/run-audit.json
+/launch-latest.json
+/full-test-output.txt
+/freeze-build.*.tmp
+/wheel-javap.txt

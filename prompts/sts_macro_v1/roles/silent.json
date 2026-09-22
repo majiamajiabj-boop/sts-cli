@@ -1,0 +1,11 @@
+{
+  "character": "THE_SILENT",
+  "strategic_axes": [
+    "poison_sources_need_scaling_or_catalyst",
+    "shiv_density_needs_accuracy_or_relic_payoffs",
+    "discard_enablers_need_energy_or_draw_payoffs",
+    "dexterity_weak_and_wraith_form_support_survival",
+    "avoid_excessive_slow_damage_without_act1_frontload"
+  ],
+  "heart_needs": ["durable_defense", "scaling_damage", "draw_consistency"]
+}
