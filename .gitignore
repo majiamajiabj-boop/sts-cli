@@ -66,3 +66,9 @@ Thumbs.db
 /full-test-output.txt
 /freeze-build.*.tmp
 /wheel-javap.txt
+
+# Local archive and legacy build scratch directories
+/.local-archive/
+/build-java-*/
+/.decision-case-*.tmp
+/assistant-data/

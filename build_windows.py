@@ -179,7 +179,7 @@ def main():
     csc = Path(os.environ.get("SystemRoot", "C:/Windows")) / "Microsoft.NET/Framework64/v4.0.30319/csc.exe"
     subprocess.run([str(csc), "/nologo", "/target:winexe", "/platform:x64", "/reference:System.Windows.Forms.dll", "/out:"+str(package / "SpireAssistant.exe"), str(ROOT / "packaging/Launcher.cs")], check=True)
     for name in ("WINDOWS_ASSISTANT_README.md", "THIRD_PARTY_NOTICES.md", "ASSISTANT_TEST_RECORD.md", "DEEPSEEK_MACRO.md"):
-        copy_file(ROOT / name, package / name)
+        copy_file(ROOT / "docs" / name, package / name)
     copy_file(ROOT / "build_windows.py", app / "build_windows.py")
     copy_file(ROOT / "packaging/Launcher.cs", app / "packaging/Launcher.cs")
     for name in ("decision-cases-v2.jsonl", "decision-case-resolution-invariants-v1.json"):

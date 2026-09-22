@@ -19,8 +19,10 @@ from pathlib import Path
 SCHEMA_VERSION = 1
 STATIC_PREFLIGHT_SCHEMA_VERSION = 1
 POLICY_VERSION = "fast-policy-v5"
-_SOURCE_SUFFIXES = {".py", ".java", ".json", ".jsonl", ".txt"}
+_SOURCE_SUFFIXES = {".py", ".java", ".json", ".jsonl", ".txt", ".md"}
 _SOURCE_ROOTS = (
+    "tests",
+    "docs",
     "prompts",
     "knowledge",
     "test_fixtures",
@@ -87,7 +89,7 @@ _RESOLUTION_INVARIANT_SOURCE_PATHS = {
     "bridge.py",
     "decision_cases.py",
     "decision_case_replay.py",
-    "test_live_macro_decisions.py",
+    "tests/test_live_macro_decisions.py",
 }
 _VALIDATED_MANIFEST_CACHE = {}
 
@@ -125,6 +127,11 @@ _RUNTIME_SOURCE_MIGRATION_ALLOWED_PATHS = frozenset({
     "test_launch_game.py",
     "test_quick_start.py",
 })
+# Preserve explicitly allowed legacy checkpoint paths and their relocated tests.
+_RUNTIME_SOURCE_MIGRATION_ALLOWED_PATHS |= frozenset(
+    "tests/" + path for path in _RUNTIME_SOURCE_MIGRATION_ALLOWED_PATHS
+    if path.startswith("test_") and path.endswith(".py")
+)
 _PARKED_RUNTIME_SOURCE_SNAPSHOT_NAME = "maintenance-runtime-source-snapshot.json"
 _MAINTENANCE_TARGET_SOURCE_SNAPSHOT_FIELDS = frozenset({
     "schema_version",

@@ -53,7 +53,7 @@ If verification fails, stop before issuing gameplay actions and fix only the ver
 
 ## Process lifecycle
 
-Run these examples from the repository root with the configured developer Python runtime:
+Run the following commands from the repository root with the configured developer Python runtime (Python 3.12 with Tk for Windows builds):
 
 ```text
 python
@@ -188,7 +188,7 @@ For Heart attempts, plan all keys explicitly:
 
 Use the fast local planner for ordinary actions. Deeper evaluation is appropriate for elites, bosses, Act 4, projected lethal turns, key choices, or genuinely close candidate scores. Do not invoke an external model for every card play and do not delay normal actions for verbose reporting.
 
-The optional DeepSeek macro adviser is governed by `DEEPSEEK_MACRO.md`. It may
+The optional DeepSeek macro adviser is governed by `docs/DEEPSEEK_MACRO.md`. It may
 only rerank already-legal non-combat macro candidates and is disabled by
 default. `shadow` records advice without applying it; `assist` applies only a
 schema-valid, current-state, high-confidence, bounded recommendation. Combat,

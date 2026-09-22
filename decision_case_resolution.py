@@ -2200,7 +2200,7 @@ def _load_production_probe_modules():
     import autoplay
     import bridge
     import decision_cases
-    from test_live_macro_decisions import (
+    from tests.test_live_macro_decisions import (
         LiveDecisionGame,
         event_screen,
         grid_screen,
@@ -4650,7 +4650,7 @@ def run_fixture_invariant(fixture_row, audit_one):
     source_paths = (
         root / "src" / "spirecomm-master" / "spirecomm" / "ai" / "agent.py",
         root / "autoplay.py", root / "bridge.py", root / "decision_cases.py",
-        root / "decision_case_replay.py", root / "test_live_macro_decisions.py",
+        root / "decision_case_replay.py", root / "tests" / "test_live_macro_decisions.py",
     )
     invariant = {
         "fixture_id": fixture_id,
