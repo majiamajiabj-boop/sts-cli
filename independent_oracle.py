@@ -1944,6 +1944,8 @@ _ORACLE_CANONICAL_AUDIT_FIELDS = {
     "in_bottle_tornado",
     "max_cards", "can_pick_zero", "selected",
     "audit_projection_version",
+    # Protocol-v3 card facts are audited independently, not presentation data.
+    "misc", "combat_cost", "free_to_play_once", "retain", "ethereal",
 }
 _ORACLE_CANONICAL_CONTAINER_FIELDS = {
     "card", "relic", "potion", "item", "reward", "link",
@@ -6037,6 +6039,9 @@ _ORACLE_INDEXED_A0_EVENT_IDS = (
 )
 
 _ORACLE_INDEXED_A0_PROGRESS_EVENTS = {
+    "tomboflordredmask": (
+        "com.megacrit.cardcrawl.events.beyond.TombRedMask", "event_stage",
+    ),
     "liarsgame": (
         "com.megacrit.cardcrawl.events.exordium.Sssserpent", "event_stage",
     ),
@@ -6242,7 +6247,7 @@ def _oracle_apply_indexed_a0_event(
         "anoteforyourself": (0, 1),
         "transmorgrifier": (0, 1),
         "purifier": (0, 1),
-        "tomboflordredmask": (0, 1, 2),
+        "tomboflordredmask": (0, 1, 2) if progress == "INTRO" else (0,),
         "thewomaninblue": (0, 1, 2, 3),
         "forgottenaltar": (0, 1, 2),
         "ghosts": (0, 1),
@@ -6604,6 +6609,7 @@ def _oracle_apply_indexed_a0_event(
                 or event_id == "accursedblacksmith" and progress == 2
                 or event_id == "mysterioussphere" and progress == "END"
                 or event_id == "thelibrary" and progress == 1
+                or event_id == "tomboflordredmask" and progress == "RESULT"
             )
             if terminal:
                 value["leave"] = True
@@ -13322,6 +13328,33 @@ def _oracle_choice_card_template_matches(left, right):
     )
 
 
+def _oracle_dead_branch_active(frame):
+    return any(
+        isinstance(relic, dict)
+        and _oracle_game_id(relic.get("id")) == "deadbranch"
+        for relic in (frame.get("game") or {}).get("relics") or []
+    )
+
+
+def _oracle_dead_branch_generated_card(initial, final, uuid, pile_entry):
+    """Bind a random combat-pool outcome, never an arbitrary pile addition."""
+    if not (_oracle_dead_branch_active(initial) and _oracle_dead_branch_active(final)):
+        return False
+    if uuid in (initial.get("deck") or {}) or uuid in (final.get("deck") or {}):
+        return False
+    if not pile_entry or pile_entry[0] not in {"hand", "discard_pile"}:
+        return False
+    card = pile_entry[1]
+    return bool(
+        _oracle_card_uuid(card) == uuid
+        and isinstance(card.get("id"), str) and card["id"]
+        and str(card.get("type") or "").upper() in {"ATTACK", "SKILL", "POWER"}
+        and str(card.get("rarity") or "").upper() in {"COMMON", "UNCOMMON", "RARE"}
+        and type(card.get("upgrades")) is int and card["upgrades"] == 0
+        and type(card.get("cost")) is int and card["cost"] >= -1
+    )
+
+
 def _oracle_choice_resolving_source_matches(master, runtime, source_id):
     """Bind an executing deck card that may carry a temporary upgrade.
 
@@ -13710,9 +13743,25 @@ def _oracle_discovery_potion_origin(records, record_index, expected):
     }
 
 
+def _oracle_combat_choice_play_origin(records, index, expected):
+    previous_index, previous = _previous_decision_record(records, index)
+    if previous is None or previous.get("action") != "play" or previous.get("after_seq") != records[index].get("before_seq"):
+        return None
+    uuid = previous.get("requested_target_id")
+    if not uuid or previous.get("resolved_target_id") != uuid:
+        return None
+    before, missing, mismatch = _state_envelope(previous, "before", expected)
+    after, after_missing, after_mismatch = _state_envelope(previous, "after", expected)
+    if missing or mismatch or after_missing or after_mismatch:
+        return None
+    hand = ((_game_from_state(before) or {}).get("combat_state") or {}).get("hand") or []
+    cards = [card for card in hand if _oracle_card_uuid(card) == uuid]
+    return _oracle_clone(cards[0]) if len(cards) == 1 else None
+
+
 def _oracle_combat_choice_settlement(
     mechanism, initial, final, selected, *, discovery_origin=None,
-    discovery_cancelled=False,
+    discovery_cancelled=False, resolving_card=None,
 ):
     """Validate persistent and transient channels for one completed chain."""
 
@@ -14080,6 +14129,7 @@ def _oracle_combat_choice_settlement(
         added = transient_delta["added"]
         resolving_sources = []
         generated_dazed = []
+        generated_branch = []
         for added_uuid in added:
             pile_entry = after_all.get(added_uuid)
             if pile_entry is None:
@@ -14126,6 +14176,9 @@ def _oracle_combat_choice_settlement(
             ):
                 generated_dazed.append(added_uuid)
                 continue
+            if _oracle_dead_branch_generated_card(initial, final, added_uuid, pile_entry):
+                generated_branch.append(added_uuid)
+                continue
             return "issues", "put_on_deck_unexpected_card_delta", details
         if len(resolving_sources) != 1:
             return "issues", "put_on_deck_resolving_card_delta_mismatch", details
@@ -14147,16 +14200,23 @@ def _oracle_combat_choice_settlement(
         expected_dazed_count = 1 if hex_active and source_is_non_attack else 0
         if len(generated_dazed) != expected_dazed_count:
             return "issues", "put_on_deck_hex_dazed_delta_mismatch", details
-        if len(added) != 1 + expected_dazed_count:
+        expected_branch_count = 1 if _oracle_dead_branch_active(initial) else 0
+        if len(generated_branch) != expected_branch_count:
+            return "issues", "put_on_deck_dead_branch_count_mismatch", details
+        branch_hand = {key for key in generated_branch if after_all[key][0] == "hand"}
+        if len(branch_hand) != min(expected_branch_count, max(0, 10 - (len(initial_hand) - 1))):
+            return "issues", "put_on_deck_dead_branch_destination_mismatch", details
+        details["generated_dead_branch"] = generated_branch
+        if len(added) != 1 + expected_dazed_count + expected_branch_count:
             return "issues", "put_on_deck_resolving_card_delta_mismatch", details
-        if set(final_hand) != set(initial_hand) - {uuid}:
+        if set(final_hand) != (set(initial_hand) - {uuid}) | branch_hand:
             return "issues", "put_on_deck_hand_delta_mismatch", details
         expected_draw = set(initial_draw) | {uuid} | set(generated_dazed)
         if set(final_draw) != expected_draw:
             return "issues", "put_on_deck_draw_delta_mismatch", details
         for name in ("discard_pile", "limbo"):
             if not _oracle_choice_maps_equal(
-                before_piles.get(name), after_piles.get(name)
+                before_piles.get(name), {key: card for key, card in (after_piles.get(name) or {}).items() if key not in generated_branch}
             ):
                 return "issues", f"put_on_deck_{name}_changed", details
         initial_exhaust = before_piles.get("exhaust_pile") or {}
@@ -14266,6 +14326,7 @@ def _oracle_combat_choice_settlement(
         # queue boundary as a created card.
         resolving_sources = []
         generated_hex_dazed = []
+        generated_branch = []
         for added_uuid in transient_delta["added"]:
             deck_card = (final.get("deck") or {}).get(added_uuid)
             pile_entry = after_all.get(added_uuid)
@@ -14281,11 +14342,22 @@ def _oracle_combat_choice_settlement(
                 resolving_sources.append((added_uuid, runtime_card))
                 continue
             if (
+                deck_card is None and resolving_card is not None
+                and _oracle_game_id(runtime_card.get("id")) == "burningpact"
+                and _oracle_choice_card_binding_matches(resolving_card, runtime_card)
+                and pile_entry[0] in {"discard_pile", "exhaust_pile"}
+            ):
+                resolving_sources.append((added_uuid, runtime_card))
+                continue
+            if (
                 deck_card is None
                 and pile_entry[0] == "draw_pile"
                 and _oracle_game_id(runtime_card.get("id")) == "dazed"
             ):
                 generated_hex_dazed.append(added_uuid)
+                continue
+            if _oracle_dead_branch_generated_card(initial, final, added_uuid, pile_entry):
+                generated_branch.append(added_uuid)
                 continue
             return "issues", "exhaust_action_unbound_transient_addition", details
         other_moves = [
@@ -14358,18 +14430,22 @@ def _oracle_combat_choice_settlement(
                 "limbo",
             )
         }
-        # A resolving selection source may only settle into a non-hand pile.
-        # Generated cards (Dead Branch, Discovery, etc.) are not master-deck
-        # additions and were already rejected by the exact binding above.
-        if added_by_pile["hand"]:
+        branch_hand = {key for key in generated_branch if after_all[key][0] == "hand"}
+        expected_branch_count = (
+            len(selected) + sum(after_all[key][0] == "exhaust_pile" for key, _ in resolving_sources)
+            if _oracle_dead_branch_active(initial) else 0
+        )
+        if len(generated_branch) != expected_branch_count:
+            return "issues", "exhaust_action_dead_branch_count_mismatch", details
+        if added_by_pile["hand"] != branch_hand:
             return "issues", "exhaust_action_source_returned_to_hand", details
         kept_hand = set(initial_hand) - set(selected)
-        drawn = set(final_hand) - kept_hand
+        drawn = set(final_hand) - kept_hand - branch_hand
         capacity = max(0, 10 - len(kept_hand))
-        draw_count = min(
-            allowed_draws, capacity,
-            len(initial_draw) + len(initial_discard),
-        )
+        draw_count = min(allowed_draws, capacity, len(initial_draw) + len(initial_discard))
+        if len(branch_hand) != min(expected_branch_count, max(0, capacity - draw_count)):
+            return "issues", "exhaust_action_dead_branch_destination_mismatch", details
+        details["generated_dead_branch"] = generated_branch
         permitted_moves = {
             ("draw_pile", "hand"),
             ("discard_pile", "hand"),
@@ -14840,6 +14916,7 @@ def _audit_combat_choice_transitions(records, expected):
                 mechanism, initial, final, selected,
                 discovery_origin=discovery_origin,
                 discovery_cancelled=discovery_cancelled,
+                resolving_card=_oracle_combat_choice_play_origin(records, chain[0], expected),
             )
         settlement.update({
             "status": "inconclusive" if status == "unknown" else status,

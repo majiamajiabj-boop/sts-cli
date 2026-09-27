@@ -4486,6 +4486,9 @@ _INDEXED_A0_EVENT_IDS = {
 }
 
 _INDEXED_A0_PROGRESS_EVENTS = {
+    "tomboflordredmask": (
+        "com.megacrit.cardcrawl.events.beyond.TombRedMask", "event_stage",
+    ),
     "liarsgame": (
         "com.megacrit.cardcrawl.events.exordium.Sssserpent", "event_stage",
     ),
@@ -4691,7 +4694,7 @@ def _apply_indexed_a0_event_consequence(
         "anoteforyourself": (0, 1),
         "transmorgrifier": (0, 1),
         "purifier": (0, 1),
-        "tomboflordredmask": (0, 1, 2),
+        "tomboflordredmask": (0, 1, 2) if progress == "INTRO" else (0,),
         "thewomaninblue": (0, 1, 2, 3),
         "forgottenaltar": (0, 1, 2),
         "ghosts": (0, 1),
@@ -5064,6 +5067,7 @@ def _apply_indexed_a0_event_consequence(
                 or event_id == "accursedblacksmith" and progress == 2
                 or event_id == "mysterioussphere" and progress == "END"
                 or event_id == "thelibrary" and progress == 1
+                or event_id == "tomboflordredmask" and progress == "RESULT"
             )
             if terminal:
                 consequence["leave"] = True

@@ -45,7 +45,7 @@ class Card:
 
     @classmethod
     def from_json(cls, json_object):
-        return cls(
+        card = cls(
             card_id=json_object["id"],
             name=json_object["name"],
             card_type=CardType[json_object["type"]],
@@ -71,6 +71,13 @@ class Card:
             ),
             in_bottle_tornado=json_object.get("in_bottle_tornado", False),
         )
+        # Keep presence separate from defaults: audit claims must reflect the
+        # exact protocol surface, including optional v3 combat facts.
+        card.audit_protocol_fields = frozenset(json_object)
+        card.combat_cost = json_object.get("combat_cost", card.cost)
+        card.free_to_play_once = json_object.get("free_to_play_once", False)
+        card.retain = json_object.get("retain", False)
+        return card
 
     def __eq__(self, other):
         return self.uuid == other.uuid

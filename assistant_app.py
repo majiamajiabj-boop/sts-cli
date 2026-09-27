@@ -7,11 +7,13 @@ import re
 import sys
 import threading
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
+from tkinter import ttk, filedialog, messagebox, simpledialog
 from pathlib import Path
 
 from assistant_paths import ROOT, data_dir, discover_games, installation, load_settings, save_settings
 from assistant_advisor import AdviceSession
+from assistant_diagnostics import collect
+from assistant_overlay import publish
 from assistant_runtime import ModeLock, start_advisor, start_auto
 
 COLORS = {"background":"#181b20", "sidebar":"#121419", "panel":"#22262d",
@@ -63,6 +65,9 @@ class AssistantApp:
         self.root = root
         self.settings = load_settings()
         self.session = AdviceSession()
+        self.overlay_enabled = True
+        self.last_error = ""
+        self.requested_mode = None
         self.state_path = Path(state_path or data_dir() / "advisor-state.json")
         self.child = self.mode = self.mode_lock = self.viewer = None
         self.compact = self.details_visible = self.settings_visible = False
@@ -94,9 +99,13 @@ class AssistantApp:
         self.outer.rowconfigure(3,weight=1)
         self.header = ttk.Frame(self.outer)
         self.header.grid(row=0,column=0,sticky="ew",pady=(0,self.px(24)))
-        ttk.Label(self.header,text="实时顾问",style="Heading.TLabel").pack(side="left")
+        self.heading_label = ttk.Label(self.header,text="实时顾问",style="Heading.TLabel")
+        self.heading_label.pack(side="left")
         self.compact_button = ttk.Button(self.header,text="精简悬浮窗  ↗",style="Quiet.TButton",command=self.toggle_compact)
         self.compact_button.pack(side="right")
+        ttk.Button(self.header, text="复制错误详情", style="Quiet.TButton", command=self.copy_diagnostics).pack(side="right")
+        self.overlay_button = ttk.Button(self.sidebar, text="游戏内建议：开", style="Nav.TButton", command=self.toggle_overlay)
+        self.overlay_button.grid(row=9,column=0,sticky="ew")
         self.status = tk.StringVar(value="尚未连接游戏")
         self.status_label = ttk.Label(self.outer,textvariable=self.status,style="Muted.TLabel",wraplength=self.px(640))
         self.status_label.grid(row=1,column=0,sticky="ew",pady=(0,self.px(18)))
@@ -272,13 +281,27 @@ class AssistantApp:
             messagebox.showinfo("模式互斥", "本助手已启动一个模式，请先手动退出游戏并关闭助手后再切换。")
             return
         title = "启动实时顾问" if mode == "advisor" else "启动自动游玩"
-        description = "将安装通信 Mod 并启动游戏。已有 Mod 文件会保留备份。\n" + ("你手动操作，助手不会替你点击或出牌。" if mode == "advisor" else "程序将自动操作游戏并开始一局 fast-policy-v5 对局。")
+        runs = 1
+        if mode == "auto":
+            runs = simpledialog.askinteger("自动托管", "托管多少局？（1–24）\n每局结束后自动开下一局，达到局数后停止。\n运行异常会停止并保留错误详情。", initialvalue=1, minvalue=1, maxvalue=24, parent=self.root)
+            if runs is None:
+                return
+        description = "将安装通信 Mod 并启动游戏。已有 Mod 文件会保留备份。\n" + ("你手动操作，助手不会替你点击或出牌。" if mode == "advisor" else f"程序将连续托管 {runs} 局 fast-policy-v5 对局。胜负均计入局数，不保证通关。")
         if not messagebox.askokcancel(title, description):
             return
+        self.requested_mode = mode
         try:
             self.mode_lock = ModeLock().acquire()
-            self.child = (start_advisor if mode == "advisor" else start_auto)(self.config())
+            self.child = start_advisor(self.config()) if mode == "advisor" else start_auto(self.config(), runs=runs)
             self.mode = mode
+            if mode == "auto":
+                self.root.title("尖塔助手 · 自动托管")
+                self.heading_label.configure(text="自动托管")
+                self.scene_var.set("按设定局数连续运行")
+                self.action_var.set("正在启动自动托管")
+                self.summary_var.set(f"计划完成 {runs} 局。每局结束后自动开下一局，完成后停在主菜单。")
+                self.target_label.grid_remove()
+                self.steps.grid_remove()
             self.advisor_button.configure(state="disabled")
             self.auto_button.configure(state="disabled")
             self.status.set("正在启动游戏，请等待 Mod 加载。")
@@ -286,7 +309,8 @@ class AssistantApp:
             if self.mode_lock:
                 self.mode_lock.close()
             self.mode_lock = None
-            messagebox.showerror("未启动游戏", str(exc))
+            self.last_error = str(exc)
+            messagebox.showerror("未启动游戏", str(exc) + "\n可以点击“复制错误详情”发送诊断信息。")
 
     def render(self,advice):
         value=(None,self.session.status) if advice is None else (advice.token,advice.action,advice.target,advice.reason,advice.scene)
@@ -325,15 +349,44 @@ class AssistantApp:
         self.advice.configure(state="disabled")
         self.root.after_idle(self.ensure_content_fits)
 
+    def toggle_overlay(self):
+        self.overlay_enabled = not self.overlay_enabled
+        self.overlay_button.configure(text="游戏内建议：" + ("开" if self.overlay_enabled else "关"))
+
+    def copy_diagnostics(self):
+        text = collect(ROOT, data_dir(), self.mode or self.requested_mode, self.last_error or self.status.get())
+        self.root.clipboard_clear()
+        self.root.clipboard_append(text)
+        messagebox.showinfo("已复制", "错误详情已复制，可以粘贴发送。常见密钥和用户名路径已遮盖。")
+
     def tick(self):
         if self.mode!="auto":
             self.session.tick(self.state_path)
             self.status.set(self.session.status)
             self.render(self.session.advice)
+            if self.mode == "advisor":
+                try:
+                    publish(self.state_path.with_name("advisor-overlay.json"), self.session, enabled=self.overlay_enabled)
+                except OSError:
+                    self.status.set("游戏内建议暂不可用：无法写入建议文件。")
             self.status_label.configure(foreground=COLORS["success"] if self.session.advice else COLORS["muted"])
         elif self.child:
             code=self.child.poll()
-            self.status.set("自动模式启动检查中" if code is None else ("自动模式启动器已完成；请通过战报查看进度。" if code==0 else "自动模式启动失败，请查看 data/auto-start.log。"))
+            message = "自动托管启动检查中" if code is None else ("自动托管已完成。" if code==0 else "自动托管已停止，请点击右上角“复制错误详情”。")
+            try:
+                progress = json.loads((ROOT / "data" / "auto-batch.json").read_text(encoding="utf-8"))
+                if code is None:
+                    message = f"自动托管：第 {progress.get('current', 1)} / {progress['requested']} 局，已完成 {progress['completed']} 局。"
+                    self.action_var.set(f"第 {progress.get('current', 1)} / {progress['requested']} 局")
+                elif code == 0:
+                    message = f"自动托管完成：{progress['completed']} / {progress['requested']} 局，已停止自动开局。"
+                    self.action_var.set("托管完成")
+                else:
+                    self.action_var.set("托管已停止")
+                self.summary_var.set(message)
+            except (OSError, ValueError, KeyError):
+                pass
+            self.status.set(message)
         self.root.after(100,self.tick)
 
     def reports(self):

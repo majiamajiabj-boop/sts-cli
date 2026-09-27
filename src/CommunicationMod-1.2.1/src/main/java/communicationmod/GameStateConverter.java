@@ -1858,6 +1858,7 @@ public class GameStateConverter {
                 "com.megacrit.cardcrawl.events.shrines.AccursedBlacksmith",
                 "com.megacrit.cardcrawl.events.beyond.MysteriousSphere",
                 "com.megacrit.cardcrawl.events.beyond.SpireHeart",
+                "com.megacrit.cardcrawl.events.beyond.TombRedMask",
                 BONFIRE_EVENT_CLASS,
         };
         boolean audited = false;

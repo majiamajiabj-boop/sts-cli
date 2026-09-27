@@ -576,6 +576,10 @@ class SimpleAgent:
                 getattr(card, "in_bottle_tornado", False)
             ),
         }
+        protocol_fields = getattr(card, "audit_protocol_fields", ())
+        for field in ("misc", "combat_cost", "free_to_play_once", "retain", "ethereal"):
+            if field in protocol_fields:
+                value[field] = getattr(card, field)
         if include_price:
             value["price"] = int(getattr(card, "price", 0) or 0)
         return value

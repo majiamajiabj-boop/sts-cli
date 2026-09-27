@@ -1,6 +1,8 @@
 package communicationmod;
 
 import basemod.*;
+import basemod.interfaces.PostRenderSubscriber;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import basemod.interfaces.PostDungeonUpdateSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
 import basemod.interfaces.PostUpdateSubscriber;
@@ -27,7 +29,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @SpireInitializer
-public class CommunicationMod implements PostInitializeSubscriber, PostUpdateSubscriber, PostDungeonUpdateSubscriber, PreUpdateSubscriber, OnStateChangeSubscriber {
+public class CommunicationMod implements PostRenderSubscriber, PostInitializeSubscriber, PostUpdateSubscriber, PostDungeonUpdateSubscriber, PreUpdateSubscriber, OnStateChangeSubscriber {
+
+    public void receivePostRender(SpriteBatch sb) { AdvisorOverlay.render(sb); }
 
     private static Process listener;
     private static StringBuilder inputBuffer = new StringBuilder();

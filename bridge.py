@@ -1960,6 +1960,9 @@ _TYPED_EVENT_IDS = {
 }
 
 _PROGRESS_EVENT_CLASSES = {
+    "tomboflordredmask": (
+        "com.megacrit.cardcrawl.events.beyond.TombRedMask", "event_stage",
+    ),
     "liarsgame": (
         "com.megacrit.cardcrawl.events.exordium.Sssserpent", "event_stage",
     ),
@@ -3581,7 +3584,15 @@ def read_initial_sequence():
     return max(sequences)
 
 
+def configure_protocol_stdio():
+    """The Mod pipe uses UTF-8, independently of Windows/Python locale."""
+    for stream in (sys.stdin, sys.stdout):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="strict")
+
+
 def main():
+    configure_protocol_stdio()
     instance_token = claim_bridge_instance()
     parent_pid = os.getppid()
     output_lock = threading.Lock()

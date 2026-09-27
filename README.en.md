@@ -36,7 +36,7 @@ Supported characters: **Ironclad, Silent, and Defect**. Watcher and third-party 
 - A player confirmed combat advice, updates after manual play and ending a turn, reward screens, and map advice.
 - Full live checks for shops, campfires, card-selection flows, disconnecting after game exit, automatic-mode startup, and mode switching remain incomplete.
 - DPI rendering was checked at 125% scaling on one Windows machine. Other PCs and switching between monitors have not been validated.
-- The EXE is unsigned. The compact window may be covered by exclusive-fullscreen games; windowed or borderless mode may be more convenient.
+- The EXE is unsigned. The advisor Mod now draws advice inside the game for fullscreen use; actual fullscreen display still needs player verification. Toggle it with 游戏内建议. Restart the game through the updated assistant to load the new Mod.
 
 See the [acceptance record and known limitations](docs/ASSISTANT_TEST_RECORD.md) (Chinese). Replay tests are not presented as live gameplay verification.
 
@@ -72,3 +72,8 @@ Share the original release ZIP rather than repacking a directory you have used: 
 The game, its Java runtime, ModTheSpire, and BaseMod are installed by the player and are not redistributed. Third-party licenses are retained in their source directories and `packaging/licenses`; see [third-party notices](docs/THIRD_PARTY_NOTICES.md). This release has not been uploaded to the Steam Workshop.
 
 See the [public publication review](docs/PUBLICATION_REVIEW.md) for the reviewed scope and handling of private history.
+
+If startup fails, click **复制错误详情** to copy bounded, redacted diagnostic text. The exact cause of the reported code-2 failure on another PC remains unconfirmed.
+
+### Consecutive autoplay
+Choose automatic play and enter 1–24 runs. Completed wins and losses both count; the assistant returns to the menu between runs and stops when the requested count is reached. Runtime/protocol errors stop the session and can be copied with the diagnostics button. Strategy findings remain recorded and do not imply release eligibility or a guaranteed victory. The current bounded validation cohort also imposes a cumulative limit for a given policy version.

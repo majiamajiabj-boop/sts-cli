@@ -345,6 +345,8 @@ def start_campaign(
     start_timeout_seconds=DEFAULT_START_TIMEOUT_SECONDS,
     poll_seconds=DEFAULT_POLL_SECONDS,
     clock=time.monotonic,
+    wait_for_completion=False,
+    on_started=None,
 ):
     root = Path(root).resolve()
     overall_started = float(clock())
@@ -397,18 +399,29 @@ def start_campaign(
         validation_batch=validation_batch,
         p0_only_batch=p0_only_batch,
     )
-    started_attempt = wait_for_formal_start(
-        root,
-        process,
-        hashes["decision_hash"],
-        hashes["controller_hash"],
-        previous_attempt_id=previous_attempt_id,
-        timeout_seconds=start_timeout_seconds,
-        poll_seconds=poll_seconds,
-        clock=clock,
-    )
+    try:
+        started_attempt = wait_for_formal_start(
+            root,
+            process,
+            hashes["decision_hash"],
+            hashes["controller_hash"],
+            previous_attempt_id=previous_attempt_id,
+            timeout_seconds=start_timeout_seconds,
+            poll_seconds=poll_seconds,
+            clock=clock,
+        )
+    except QuickCampaignError as exc:
+        from assistant_diagnostics import tail
+        raise QuickCampaignError(f"{exc}\n启动详情（{log_path.name}）：\n{tail(log_path)}") from exc
+    if on_started is not None:
+        on_started(started_attempt)
+    if wait_for_completion:
+        code = process.wait()
+        if code != 0:
+            from assistant_diagnostics import tail
+            raise QuickCampaignError(f"自动托管中止（退出码 {code}）：\n{tail(log_path)}")
     return {
-        "status": "started",
+        "status": "completed" if wait_for_completion else "started",
         **hashes,
         "source_digest": manifest["source_digest"],
         "preflight_reused": preflight["reused"],

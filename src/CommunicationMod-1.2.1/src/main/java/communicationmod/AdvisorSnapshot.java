@@ -16,6 +16,12 @@ public final class AdvisorSnapshot {
     private static final Gson GSON = new Gson();
     public static boolean enabled() { return ENABLED; }
 
+    public static boolean matches(String session, long seq) {
+        return ENABLED && SESSION.equals(session) && sequence == seq
+            && GameStateListener.isAdvisorReady()
+            && previous.equals(true + GameStateConverter.getCommunicationState());
+    }
+
     public static void update() {
         long now = System.currentTimeMillis();
         if (!ENABLED || now - lastWrite < 100) return;

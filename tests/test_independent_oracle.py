@@ -11407,6 +11407,8 @@ class ExtendedConsequenceOracleRegressionTests(unittest.TestCase):
                     },
                     **copy.deepcopy(game_extra),
                 }
+                if event_id == "Tomb of Lord Red Mask":
+                    game["screen_state"].update(event_class="com.megacrit.cardcrawl.events.beyond.TombRedMask", event_stage="INTRO")
                 option = {
                     "option_id": f"event:{event_id}:{index}",
                     "choice_index": index, "label": event_id,

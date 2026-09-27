@@ -47,6 +47,37 @@ class JavaAdvisorTests(unittest.TestCase):
         if cls.jdk is None:
             raise unittest.SkipTest("Java 离线执行测试需要构建用 JDK")
 
+    def test_mod_pipe_is_utf8_even_when_windows_default_is_gbk(self):
+        package = test_jar_path()
+        self.assertIsNotNone(package)
+        info = test_installation()
+        with tempfile.TemporaryDirectory(prefix="通信 编码 ") as tmp:
+            directory = Path(tmp)
+            source = directory / "PipeProbe.java"
+            source.write_text('''import communicationmod.DataWriter;
+import java.io.*;
+import java.util.concurrent.*;
+public class PipeProbe {
+ public static void main(String[] args) throws Exception {
+  BlockingQueue<String> q=new LinkedBlockingQueue<String>();
+  ByteArrayOutputStream out=new ByteArrayOutputStream();
+  Thread t=new Thread(new DataWriter(q,out,false)); t.start();
+  q.put("{\\"name\\":\\"防御 中文路径\\"}");
+  long deadline=System.currentTimeMillis()+3000;
+  while(out.size()==0 && System.currentTimeMillis()<deadline) Thread.sleep(5);
+  t.interrupt(); t.join(3000);
+  if(t.isAlive()) throw new AssertionError("writer did not stop");
+  System.out.write(out.toByteArray());
+ }
+}''', encoding="utf-8")
+            cp = os.pathsep.join(str(p) for p in (package, info.game / "desktop-1.0.jar", info.mts, info.basemod))
+            compiled = subprocess.run([str(self.jdk / "bin/javac.exe"), "-encoding", "UTF-8", "-cp", cp, "-d", str(directory), str(source)], capture_output=True)
+            self.assertEqual(0, compiled.returncode, compiled.stderr)
+            for encoding in ("GBK", "windows-1252"):
+                result = subprocess.run([str(self.jdk / "bin/java.exe"), "-Dfile.encoding=" + encoding, "-cp", str(directory)+os.pathsep+cp, "PipeProbe"], capture_output=True, timeout=15)
+                self.assertEqual(0, result.returncode, result.stderr)
+                self.assertIn('{"name":"防御 中文路径"}\n'.encode("utf-8"), result.stdout)
+
     def test_production_snapshot_sequence_heartbeat_busy_unicode(self):
         with tempfile.TemporaryDirectory(prefix="顾问 Java ") as tmp:
             directory = Path(tmp)
@@ -66,6 +97,12 @@ public class Probe {
  public static void main(String[] args) throws Exception {
   Path p=Paths.get(System.getProperty("sts.assistant.state"));
   AdvisorSnapshot.update(); System.out.println(new String(Files.readAllBytes(p),"UTF-8"));
+  com.google.gson.JsonObject frame=new com.google.gson.JsonParser().parse(new String(Files.readAllBytes(p),"UTF-8")).getAsJsonObject();
+  String session=frame.get("session").getAsString();
+  if (!AdvisorSnapshot.matches(session,1) || AdvisorSnapshot.matches("wrong",1) || AdvisorSnapshot.matches(session,2)) throw new AssertionError("binding");
+  String saved=GameStateConverter.raw; GameStateConverter.raw="{}";
+  if (AdvisorSnapshot.matches(session,1)) throw new AssertionError("changed state before next snapshot");
+  GameStateConverter.raw=saved;
   Thread.sleep(120); AdvisorSnapshot.update(); System.out.println(new String(Files.readAllBytes(p),"UTF-8"));
   GameStateListener.ready=false; Thread.sleep(120); AdvisorSnapshot.update(); System.out.println(new String(Files.readAllBytes(p),"UTF-8"));
   GameStateConverter.raw="{\\"in_game\\":true,\\"x\\":2}"; Thread.sleep(120); AdvisorSnapshot.update(); System.out.println(new String(Files.readAllBytes(p),"UTF-8"));

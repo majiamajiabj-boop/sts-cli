@@ -16,7 +16,7 @@ import zipfile
 from pathlib import Path
 from assistant_paths import ROOT, installation
 
-MODULES = "assistant_release assistant_app assistant_advisor assistant_paths assistant_runtime autoplay autoplay_runner bridge campaign_attempt campaign_selector cohort_report cohort_review death_replay decision_case_corpus decision_case_replay decision_case_resolution decision_cases deepseek_macro freeze_manifest independent_oracle launch_game macro_policy macro_wire policy_contracts pre_run_binding prompt_assembler quick_campaign quick_start release_preflight run_context strategy_audit stsctl".split()
+MODULES = "assistant_batch assistant_overlay assistant_diagnostics assistant_release assistant_app assistant_advisor assistant_paths assistant_runtime autoplay autoplay_runner bridge campaign_attempt campaign_selector cohort_report cohort_review death_replay decision_case_corpus decision_case_replay decision_case_resolution decision_cases deepseek_macro freeze_manifest independent_oracle launch_game macro_policy macro_wire policy_contracts pre_run_binding prompt_assembler quick_campaign quick_start release_preflight run_context strategy_audit stsctl".split()
 
 
 def copy_file(source, target):
@@ -67,7 +67,7 @@ def build_mod(destination, build, jdk, info):
     (build / "javac.log").write_bytes(result.stdout + result.stderr)
     if result.returncode:
         raise RuntimeError(f"通信 Mod 编译失败，请查看 {build / 'javac.log'}")
-    metadata = {"modid": "CommunicationMod", "name": "Communication Mod + Read-only Advisor", "author_list": ["Forgotten Arbiter", "sts-cli contributors"], "description": "Protocol-v2 controller and passive manual-play advisor. Advisor mode rejects all commands.", "version": "1.2.1-assistant.1", "sts_version": "12-18-2022", "mts_version": "3.18.1", "dependencies": ["basemod"]}
+    metadata = {"modid": "CommunicationMod", "name": "Communication Mod + Read-only Advisor", "author_list": ["Forgotten Arbiter", "sts-cli contributors"], "description": "Protocol-v2 controller and passive manual-play advisor. Advisor mode rejects all commands.", "version": "1.2.1-assistant.2", "sts_version": "12-18-2022", "mts_version": "3.18.1", "dependencies": ["basemod"]}
     with zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as jar:
         for path in sorted(classes.rglob("*.class")):
             jar.write(path, path.relative_to(classes).as_posix())

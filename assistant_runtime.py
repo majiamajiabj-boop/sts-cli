@@ -110,7 +110,9 @@ def auto_preflight():
     freeze_manifest.validate_static_preflight(json.loads(path.read_text(encoding="utf-8")), ROOT, hashes["decision_hash"], hashes["controller_hash"])
 
 
-def start_auto(config, remote=None):
+def start_auto(config, remote=None, *, runs=1):
+    from assistant_batch import run_count
+    runs = run_count(runs)
     auto_preflight()
     info = install_mod(config)
     env = os.environ.copy()
@@ -120,4 +122,4 @@ def start_auto(config, remote=None):
     if remote:
         env.update(remote)
     with (data_dir() / "auto-start.log").open("ab") as log:
-        return subprocess.Popen([str(bundled_python()), str(ROOT / "quick_campaign.py")], cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        return subprocess.Popen([str(bundled_python()), str(ROOT / "assistant_batch.py"), "--runs", str(runs)], cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
